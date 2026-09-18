@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>પ્રાથમિક શાળા નવા ટોઠીદરા - Smart Grain</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f1f8f4;
+    color:#222;
+}
+
+header{
+    background:#16a34a;
+    color:white;
+    text-align:center;
+    padding:20px 10px;
+}
+
+.school{
+    font-size:30px;
+    font-weight:bold;
+    margin:0;
+}
+
+.title{
+    font-size:22px;
+    margin-top:8px;
+}
+
+.container{
+    width:94%;
+    max-width:1000px;
+    margin:20px auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 3px 12px #bbb;
+}
+
+input,select,button{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    border-radius:9px;
+    border:1px solid #bbb;
+    font-size:16px;
+}
+
+button{
+    background:#16a34a;
+    color:white;
+    border:0;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#15803d;
+}
+
+.hidden{
+    display:none;
+}
+
+.demo{
+    margin-top:10px;
+    padding:12px;
+    background:#fff3cd;
+    color:#92400e;
+    text-align:center;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.message{
+    text-align:center;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.info{
+    background:#e8f2ff;
+    padding:12px;
+    border-left:5px solid #2563eb;
+    border-radius:8px;
+}
+
+.grains{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+}
+
+.grain{
+    text-align:center;
+    padding:12px;
+    border-radius:14px;
+    border:3px solid #22c55e;
+    background:white;
+}
+
+.grain.medium{
+    border-color:#eab308;
+}
+
+.grain.low{
+    border-color:#ef4444;
+}
+
+.grain img{
+    width:100%;
+    height:130px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.name{
+    font-size:20px;
+    font-weight:bold;
+    margin:8px;
+}
+
+.level{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.status{
+    margin-top:8px;
+    padding:7px;
+    border-radius:7px;
+    font-weight:bold;
+}
+
+.good .status{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.medium .status{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.low .status{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.alert{
+    margin-top:8px;
+    padding:8px;
+    background:#fee2e2;
+    color:#b91c1c;
+    border-radius:7px;
+    font-weight:bold;
+}
+
+.history{
+    background:#fafafa;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin-top:12px;
+}
+
+.web{
+    display:block;
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    margin-top:12px;
+    font-weight:bold;
+}
+
+.delete{
+    background:#dc2626;
+}
+
+@media(max-width:600px){
+
+    .school{
+        font-size:25px;
+    }
+
+    .title{
+        font-size:19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= FIRST PAGE ================= -->
+
+<header>
+
+    <div class="school">
+        પ્રાથમિક શાળા નવા ટોઠીદરા
+    </div>
+
+    <div class="title">
+        🌾 Smart Grain Monitoring System
+    </div>
+
+</header>
+
+
+<div class="container">
+
+<!-- LOGIN -->
+
+<div id="login" class="card">
+
+    <h2>🔐 Login</h2>
+
+    <p>
+        સિસ્ટમ ઉપયોગ કરવા માટે મોબાઇલ નંબર નાખો.
+    </p>
+
+    <input
+        id="mobile"
+        type="tel"
+        maxlength="10"
+        placeholder="10 અંકનો મોબાઇલ નંબર"
+    >
+
+    <button onclick="sendOTP()">
+        📩 OTP મોકલો
+    </button>
+
+    <div id="otpArea" class="hidden">
+
+        <input
+            id="otp"
+            type="text"
+            maxlength="6"
+            placeholder="6 અંકનો OTP"
+        >
+
+        <div id="demo" class="demo"></div>
+
+        <button onclick="verifyOTP()">
+            ✅ Verify OTP
+        </button>
+
+    </div>
+
+    <div id="loginMsg" class="message"></div>
+
+</div>
+
+
+<!-- ================= MAIN PAGE ================= -->
+
+<div id="main" class="hidden">
+
+<header style="border-radius:15px;margin-bottom:20px;">
+
+    <div class="school">
+        પ્રાથમિક શાળા નવા ટોઠીદરા
+    </div>
+
+    <div class="title">
+        🌾 Smart Grain Monitoring System
+    </div>
+
+</header>
+
+
+<!-- GRAIN -->
+
+<div class="card">
+
+    <h2>🌾 અનાજનું લેવલ</h2>
+
+    <div class="info">
+        🟡 50% અથવા ઓછું = Yellow Alert<br>
+        🔴 25% અથવા ઓછું = Auto Booking Alert
+    </div>
+
+    <br>
+
+    <div id="grainList" class="grains"></div>
+
+</div>
+
+
+<!-- SENSOR -->
+
+<div class="card">
+
+    <h2>📡 Sensor Demo</h2>
+
+    <label>અનાજ પસંદ કરો</label>
+
+    <select id="sensorName">
+
+        <option value="ચોખા">ચોખા</option>
+        <option value="ઘઉં">ઘઉં</option>
+        <option value="તુવેર દાળ">તુવેર દાળ</option>
+        <option value="ચણા દાળ">ચણા દાળ</option>
+        <option value="મગ દાળ">મગ દાળ</option>
+        <option value="ખાંડ">ખાંડ</option>
+
+    </select>
+
+    <label>Level (%)</label>
+
+    <input
+        id="sensorValue"
+        type="number"
+        min="0"
+        max="100"
+        placeholder="0 થી 100"
+    >
+
+    <button onclick="sensorUpdate()">
+        🔄 Sensor Update
+    </button>
+
+    <div id="sensorMsg" class="message"></div>
+
+</div>
+
+
+<!-- BOOKING -->
+
+<div class="card">
+
+    <h2>🛒 અનાજ Booking</h2>
+
+    <div class="info">
+        અનાજનું લેવલ 25% અથવા ઓછું થાય ત્યારે
+        Auto Booking Alert દેખાશે.
+    </div>
+
+
+    <h3>1️⃣ અનાજ</h3>
+
+    <select id="bookGrain">
+
+        <option value="">
+            -- અનાજ પસંદ કરો --
+        </option>
+
+        <option value="ચોખા">ચોખા</option>
+        <option value="ઘઉં">ઘઉં</option>
+        <option value="તુવેર દાળ">તુવેર દાળ</option>
+        <option value="ચણા દાળ">ચણા દાળ</option>
+        <option value="મગ દાળ">મગ દાળ</option>
+        <option value="ખાંડ">ખાંડ</option>
+
+    </select>
+
+
+    <h3>2️⃣ Mobile Number</h3>
+
+    <input
+        id="bookMobile"
+        type="tel"
+        maxlength="10"
+        placeholder="10 અંકનો મોબાઇલ નંબર"
+    >
+
+
+    <h3>3️⃣ Website</h3>
+
+    <select id="bookWebsite">
+
+        <option value="">
+            -- Website પસંદ કરો --
+        </option>
+
+        <option value="https://www.amazon.in/">
+            Amazon
+        </option>
+
+        <option value="https://www.flipkart.com/">
+            Flipkart
+        </option>
+
+        <option value="https://www.blinkit.com/">
+            Blinkit
+        </option>
+
+        <option value="https://www.relianceretail.com/">
+            Reliance Retail
+        </option>
+
+    </select>
+
+
+    <button onclick="booking()">
+        🛒 Booking કરો
+    </button>
+
+    <div id="bookMsg" class="message"></div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="card">
+
+    <h2>📜 Booking History</h2>
+
+    <div id="history"></div>
+
+    <button
+        class="delete"
+        onclick="deleteHistory()"
+    >
+        🗑️ History Delete કરો
+    </button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================= DATA ================= */
+
+let otpCode = "";
+
+let grainData = {
+
+    "ચોખા":{
+        level:75,
+        image:"https://upload.wikimedia.org/wikipedia/commons/6/60/Rice_grains.jpg"
+    },
+
+    "ઘઉં":{
+        level:50,
+        image:"https://upload.wikimedia.org/wikipedia/commons/2/27/Wheat_close-up.JPG"
+    },
+
+    "તુવેર દાળ":{
+        level:25,
+        image:"https://upload.wikimedia.org/wikipedia/commons/6/6c/Toor_Dal.jpg"
+    },
+
+    "ચણા દાળ":{
+        level:60,
+        image:"https://upload.wikimedia.org/wikipedia/commons/3/3b/Chickpea.jpg"
+    },
+
+    "મગ દાળ":{
+        level:40,
+        image:"https://upload.wikimedia.org/wikipedia/commons/5/5d/Mung_beans.jpg"
+    },
+
+    "ખાંડ":{
+        level:70,
+        image:"https://upload.wikimedia.org/wikipedia/commons/2/2f/Sugar_crystals.jpg"
+    }
+
+};
+
+
+/* ================= OTP ================= */
+
+function sendOTP(){
+
+    let mobile =
+        document.getElementById("mobile").value.trim();
+
+    if(!/^[6-9][0-9]{9}$/.test(mobile)){
+
+        document.getElementById("loginMsg").innerHTML =
+        "❌ યોગ્ય 10 અંકનો મોબાઇલ નંબર નાખો.";
+
+        return;
+    }
+
+    otpCode =
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        ).toString();
+
+    document
+        .getElementById("otpArea")
+        .classList.remove("hidden");
+
+    document.getElementById("demo").innerHTML =
+        "તમારો DEMO OTP: " + otpCode;
+
+    document.getElementById("loginMsg").innerHTML =
+        "OTP નાખીને Verify કરો.";
+}
+
+
+/* ================= VERIFY ================= */
+
+function verifyOTP(){
+
+    let otp =
+        document.getElementById("otp").value.trim();
+
+    if(otp === otpCode && otpCode !== ""){
+
+        document
+            .getElementById("login")
+            .classList.add("hidden");
+
+        document
+            .getElementById("main")
+            .classList.remove("hidden");
+
+        document.getElementById("bookMobile").value =
+            document.getElementById("mobile").value;
+
+        showGrains();
+
+        showHistory();
+
+    }
+    else{
+
+        document.getElementById("loginMsg").innerHTML =
+        "❌ OTP ખોટો છે.";
+
+    }
+}
+
+
+/* ================= SHOW GRAINS ================= */
+
+function showGrains(){
+
+    let box =
+        document.getElementById("grainList");
+
+    box.innerHTML = "";
+
+    for(let name in grainData){
+
+        let data = grainData[name];
+
+        let level = data.level;
+
+        let className = "good";
+
+        let status = "🟢 GOOD";
+
+        let alert = "";
+
+
+        if(level <= 25){
+
+            className = "low";
+
+            status = "🔴 LOW STOCK";
+
+            alert =
+            "<div class='alert'>🚨 AUTO BOOKING ALERT</div>";
+
+        }
+        else if(level <= 50){
+
+            className = "medium";
+
+            status = "🟡 MEDIUM";
+
+        }
+
+
+        box.innerHTML += `
+
+        <div class="grain ${className}">
+
+            <img
+                src="${data.image}"
+                alt="${name}"
+                onerror="this.style.display='none'"
+            >
+
+            <div class="name">
+                ${name}
+            </div>
+
+            <div class="level">
+                ${level}%
+            </div>
+
+            <div class="status">
+                ${status}
+            </div>
+
+            ${alert}
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= SENSOR ================= */
+
+function sensorUpdate(){
+
+    let name =
+        document.getElementById("sensorName").value;
+
+    let value =
+        Number(
+            document.getElementById("sensorValue").value
+        );
+
+
+    if(isNaN(value) || value < 0 || value > 100){
+
+        document.getElementById("sensorMsg").innerHTML =
+        "❌ 0 થી 100 વચ્ચે Level નાખો.";
+
+        return;
+    }
+
+
+    grainData[name].level = value;
+
+    showGrains();
+
+
+    if(value <= 25){
+
+        document.getElementById("sensorMsg").innerHTML =
+        "🔴 " + name +
+        " નું લેવલ " + value +
+        "% છે. Auto Booking Alert ચાલુ છે.";
+
+        document.getElementById("bookGrain").value =
+        name;
+
+    }
+    else if(value <= 50){
+
+        document.getElementById("sensorMsg").innerHTML =
+        "🟡 " + name +
+        " નું લેવલ મધ્યમ છે.";
+
+    }
+    else{
+
+        document.getElementById("sensorMsg").innerHTML =
+        "🟢 " + name +
+        " નું લેવલ સારું છે.";
+
+    }
+
+}
+
+
+/* ================= BOOKING ================= */
+
+function booking(){
+
+    let grain =
+        document.getElementById("bookGrain").value;
+
+    let mobile =
+        document.getElementById("bookMobile").value.trim();
+
+    let website =
+        document.getElementById("bookWebsite");
+
+    let url =
+        website.value;
+
+
+    if(grain === ""){
+
+        document.getElementById("bookMsg").innerHTML =
+        "❌ અનાજ પસંદ કરો.";
+
+        return;
+    }
+
+
+    if(!/^[6-9][0-9]{9}$/.test(mobile)){
+
+        document.getElementById("bookMsg").innerHTML =
+        "❌ યોગ્ય Mobile Number નાખો.";
+
+        return;
+    }
+
+
+    if(url === ""){
+
+        document.getElementById("bookMsg").innerHTML =
+        "❌ Website પસંદ કરો.";
+
+        return;
+    }
+
+
+    let websiteName =
+        website.options[
+            website.selectedIndex
+        ].text;
+
+
+    let now = new Date();
+
+
+    let item = {
+
+        grain:grain,
+
+        mobile:mobile,
+
+        website:websiteName,
+
+        url:url,
+
+        date:now.toLocaleDateString("en-IN"),
+
+        time:now.toLocaleTimeString("en-IN")
+
+    };
+
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("smartGrainHistory")
+            || "[]"
+        );
+
+
+    history.unshift(item);
+
+
+    localStorage.setItem(
+        "smartGrainHistory",
+        JSON.stringify(history)
+    );
+
+
+    showHistory();
+
+
+    document.getElementById("bookMsg").innerHTML =
+    "✅ Booking Historyમાં નોંધાઈ ગઈ છે. Website ખોલી રહ્યા છીએ...";
+
+
+    /* Website open */
+
+    setTimeout(function(){
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    },300);
+
+}
+
+
+/* ================= HISTORY ================= */
+
+function showHistory(){
+
+    let box =
+        document.getElementById("history");
+
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("smartGrainHistory")
+            || "[]"
+        );
+
+
+    if(history.length === 0){
+
+        box.innerHTML =
+        "<p>હજુ કોઈ Booking નથી.</p>";
+
+        return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    history.forEach(function(item){
+
+        box.innerHTML += `
+
+        <div class="history">
+
+            <b>🌾 અનાજ:</b>
+            ${item.grain}
+
+            <br><br>
+
+            <b>📱 Mobile:</b>
+            ${item.mobile}
+
+            <br><br>
+
+            <b>🌐 Website:</b>
+            ${item.website}
+
+            <br><br>
+
+            <b>📅 તારીખ:</b>
+            ${item.date}
+
+            <br>
+
+            <b>⏰ સમય:</b>
+            ${item.time}
+
+            <a
+                class="web"
+                href="${item.url}"
+                target="_blank"
+            >
+                🌐 ${item.website} Open કરો
+            </a>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ================= DELETE ================= */
+
+function deleteHistory(){
+
+    if(
+        confirm(
+            "શું બધી Booking History Delete કરવી છે?"
+        )
+    ){
+
+        localStorage.removeItem(
+            "smartGrainHistory"
+        );
+
+        showHistory();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
